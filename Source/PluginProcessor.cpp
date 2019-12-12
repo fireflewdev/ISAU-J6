@@ -24,6 +24,14 @@ Isauj6AudioProcessor::Isauj6AudioProcessor()
                        )
 #endif
 {
+    mySynth.clearVoices();
+    int voiceCount = 16;
+    for(int i = 0; i < voiceCount; i++) //5 voice synth
+    {
+        mySynth.addVoice(new SynthVoice());
+    }
+    mySynth.clearSounds();
+    mySynth.addSound(new SynthSound());
 }
 
 Isauj6AudioProcessor::~Isauj6AudioProcessor()
@@ -97,6 +105,9 @@ void Isauj6AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    ignoreUnused(samplesPerBlock);
+    lastSampleRate = sampleRate;
+    mySynth.setCurrentPlaybackSampleRate(lastSampleRate);
 }
 
 void Isauj6AudioProcessor::releaseResources()
@@ -156,6 +167,8 @@ void Isauj6AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
 
         // ..do something to the data...
     }
+    buffer.clear();
+    mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
 //==============================================================================

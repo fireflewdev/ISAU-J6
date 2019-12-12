@@ -17,7 +17,7 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (800, 600);
 }
 
 Isauj6AudioProcessorEditor::~Isauj6AudioProcessorEditor()
@@ -31,8 +31,8 @@ void Isauj6AudioProcessorEditor::paint (Graphics& g)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 
     g.setColour (Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
+    g.setFont (50.0f);
+    g.drawFittedText ("henlo :)", getLocalBounds(), Justification::centred, 1);
 }
 
 void Isauj6AudioProcessorEditor::resized()
