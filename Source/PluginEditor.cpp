@@ -30,6 +30,7 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
     addAndMakeVisible (attackLabel);
     attackLabel.setText("Attack", dontSendNotification);
     attackLabel.attachToComponent (&attackSlider, true);
+    attackLabel.setJustificationType (Justification::top);
     
     decaySlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
     decaySlider.setRange(0.1f, 500.0f);
@@ -82,7 +83,7 @@ void Isauj6AudioProcessorEditor::resized()
     attackSlider.setBounds(buff,getHeight()-100-buff,20,100);
     decaySlider.setBounds(40+buff,getHeight()-100-buff,20,100);
     sustainSlider.setBounds(80+buff,getHeight()-100-buff,20,100);
-    releaseSlider.setBounds(120+buff,getHeight()-100,20,100);
+    releaseSlider.setBounds(120+buff,getHeight()-100-buff,20,100);
 }
 
 void Isauj6AudioProcessorEditor::sliderValueChanged(Slider* slider){
