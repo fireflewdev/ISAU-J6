@@ -21,12 +21,18 @@ Isauj6AudioProcessor::Isauj6AudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+attackTime(0.1f),
+tree (*this, nullptr)
+
 #endif
 {
+    NormalisableRange<float> attackParam (0.1f, 5000.0f);
+    tree.createAndAddParameter("attack", "Attack", "Attack", attackParam, 0.1f, nullptr, nullptr);
+    tree.state = ValueTree("Foo");
     mySynth.clearVoices();
     int voiceCount = 16;
-    for(int i = 0; i < voiceCount; i++) //5 voice synth
+    for(int i = 0; i < voiceCount; i++) //16 voice synth
     {
         mySynth.addVoice(new SynthVoice());
     }
@@ -36,6 +42,7 @@ Isauj6AudioProcessor::Isauj6AudioProcessor()
 
 Isauj6AudioProcessor::~Isauj6AudioProcessor()
 {
+    
 }
 
 //==============================================================================
@@ -145,7 +152,7 @@ void Isauj6AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
     ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-
+    
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -154,7 +161,7 @@ void Isauj6AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
+    
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     // Make sure to reset the state if your inner loop is processing
@@ -164,10 +171,43 @@ void Isauj6AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
-
+        
         // ..do something to the data...
     }
+    /*for (int i = 0; i < mySynth.getNumVoices(); i++)
+    {
+        myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i));
+        float* newFloatPtr = (float*) tree.getRawParameterValue("attack");
+        myVoice.getVoice(i)->getAttackParam(newFloatPtr);
+    }*/
     buffer.clear();
+    
+    MidiBuffer processedMidi;
+    int time;
+    MidiMessage m;
+    
+    for (MidiBuffer::Iterator i (midiMessages); i.getNextEvent (m, time);)
+    {
+        if (m.isNoteOn())
+        {
+            uint8 newAtk = (uint8)attackTime;
+            m = MidiMessage::noteOn(m.getChannel(), m.getNoteNumber(), newVel);
+        }
+        else if (m.isNoteOff())
+        {
+        }
+        else if (m.isAftertouch())
+        {
+        }
+        else if (m.isPitchWheel())
+        {
+        }
+        
+        processedMidi.addEvent (m, time);
+    }
+    
+    midiMessages.swapWith (processedMidi);
+    
     mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 

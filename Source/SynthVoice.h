@@ -21,10 +21,15 @@ public:
         return dynamic_cast<SynthSound*>(sound) != nullptr;
     }
     
+    void getAttackParam (std::atomic<float>* attack)
+    {
+        env1.setAttack(double(*attack));
+    }
+    
     static double noteHz(int midiNoteNumber, double centsOffset)
     {
         double hertz = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-        hertz *= std::pow(2.0, centsOffset / 1200);
+        hertz *= std::pow(2.0, centsOffset / 1200); // freq*(2^(centsoffset/1200)
         return hertz;
     }
     
@@ -54,18 +59,20 @@ public:
     void renderNextBlock (AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
     {
         //ADSR! :)
-        env1.setAttack(10); //10ms attack
+        env1.setAttack(10);
         env1.setDecay(300); //30ms decay
-        env1.setSustain(0.8); //between 0-1
-        env1.setRelease(200); //10ms release
+        env1.setSustain(0.1); //between 0-1
+        env1.setRelease(0); //10ms release
                         
         for (int sample = 0; sample < numSamples; ++sample)
         {
-            double theWave = osc1.triangle(frequency);
+            double theWave = osc1.saw(frequency);
             double theSound = env1.adsr(theWave, env1.trigger) * level;
+            double filteredSound = filter1.lores(theSound, 200, 0.1);
+
             for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
             {
-                outputBuffer.addSample(channel, startSample, theSound);
+                outputBuffer.addSample(channel, startSample, filteredSound);
             }
             ++startSample;
         }
@@ -91,4 +98,5 @@ private:
     
     maxiOsc osc1;
     maxiEnv env1;
+    maxiFilter filter1;
 };

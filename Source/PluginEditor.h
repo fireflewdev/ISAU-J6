@@ -16,7 +16,8 @@
 //==============================================================================
 /**
 */
-class Isauj6AudioProcessorEditor  : public AudioProcessorEditor
+class Isauj6AudioProcessorEditor  : public AudioProcessorEditor,
+public Slider::Listener
 {
 public:
     Isauj6AudioProcessorEditor (Isauj6AudioProcessor&);
@@ -25,11 +26,15 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
+    
+    void sliderValueChanged (Slider* slider) override;
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     Isauj6AudioProcessor& processor;
+    
+    Slider attackSlider; // [2]
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Isauj6AudioProcessorEditor)
 };

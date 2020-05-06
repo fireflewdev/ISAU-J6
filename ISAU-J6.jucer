@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="M3ZZnx" name="ISAU-J6" projectType="audioplug" jucerVersion="5.4.5"
+<JUCERPROJECT id="M3ZZnx" name="ISAU-J6" projectType="audioplug" jucerVersion="5.4.7"
               pluginFormats="buildAU,buildStandalone" pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn"
               pluginManufacturer="Fireflew Development">
   <MAINGROUP id="qEEjMK" name="ISAU-J6">
     <GROUP id="{2C05733A-D5A7-5A39-389D-9D75BEBDAD84}" name="Source">
+      <FILE id="schJWr" name="SynthVoice.h" compile="1" resource="0" file="Source/SynthVoice.h"/>
+      <FILE id="qKybly" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
       <GROUP id="{24414260-440E-83B9-E859-2DF58037E476}" name="Maximilian">
         <GROUP id="{742155F8-66CD-8F80-16EE-24CF1A0C7ECB}" name="libs">
           <FILE id="rIuGn0" name="fft.cpp" compile="1" resource="0" file="../SynthDevLibs/Maximilian/libs/fft.cpp"/>
@@ -36,8 +38,6 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="vydz2Q" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
-    <FILE id="qKybly" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
-    <FILE id="schJWr" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
