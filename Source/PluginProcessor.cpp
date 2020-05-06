@@ -23,13 +23,15 @@ Isauj6AudioProcessor::Isauj6AudioProcessor()
                      #endif
                        ),
 attackTime(0.1f),
-tree (*this, nullptr)
+decayTime(500.0f),
+sustainVal(1.0f),
+releaseTime(0.0f)
 
 #endif
 {
-    NormalisableRange<float> attackParam (0.1f, 5000.0f);
-    tree.createAndAddParameter("attack", "Attack", "Attack", attackParam, 0.1f, nullptr, nullptr);
-    tree.state = ValueTree("Foo");
+    /*NormalisableRange<float> attackParam (0.1f, 5000.0f);
+    NormalisableRange<float> decayParam (0.1f, 500.0f);
+    NormalisableRange<float> sustainParam (0.1f, 1.0f);*/
     mySynth.clearVoices();
     int voiceCount = 16;
     for(int i = 0; i < voiceCount; i++) //16 voice synth
@@ -174,39 +176,22 @@ void Isauj6AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
         
         // ..do something to the data...
     }
-    /*for (int i = 0; i < mySynth.getNumVoices(); i++)
+    for (int i = 0; i < mySynth.getNumVoices(); i++)
     {
-        myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i));
-        float* newFloatPtr = (float*) tree.getRawParameterValue("attack");
-        myVoice.getVoice(i)->getAttackParam(newFloatPtr);
-    }*/
+        SynthVoice *myVoice = dynamic_cast<SynthVoice *>(mySynth.getVoice(i));
+        myVoice->setAttackParam(attackTime);
+        myVoice->setDecayParam(decayTime);
+        myVoice->setSustainParam(sustainVal);
+        myVoice->setReleaseParam(releaseTime);
+    }
     buffer.clear();
     
-    MidiBuffer processedMidi;
-    int time;
-    MidiMessage m;
-    
-    for (MidiBuffer::Iterator i (midiMessages); i.getNextEvent (m, time);)
-    {
-        if (m.isNoteOn())
+    /*for (int v = 0; v < mySynth.getNumVoices(); v++) {
+        if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(v))))
         {
-            uint8 newAtk = (uint8)attackTime;
-            m = MidiMessage::noteOn(m.getChannel(), m.getNoteNumber(), newVel);
+            
         }
-        else if (m.isNoteOff())
-        {
-        }
-        else if (m.isAftertouch())
-        {
-        }
-        else if (m.isPitchWheel())
-        {
-        }
-        
-        processedMidi.addEvent (m, time);
-    }
-    
-    midiMessages.swapWith (processedMidi);
+    }*/
     
     mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }

@@ -21,9 +21,25 @@ public:
         return dynamic_cast<SynthSound*>(sound) != nullptr;
     }
     
-    void getAttackParam (std::atomic<float>* attack)
+    void setAttackParam (double e)
     {
-        env1.setAttack(double(*attack));
+        env1.setAttack(e);
+    }
+    
+    void setDecayParam (double e)
+    {
+        env1.setDecay(e);
+    }
+    
+    void setSustainParam (double e)
+    {
+        env1.setSustain(e);
+    }
+    
+    void setReleaseParam (double e)
+    {
+        env1.setRelease(e);
+        cout<<"yo"<<e<<"\n";
     }
     
     static double noteHz(int midiNoteNumber, double centsOffset)
@@ -59,10 +75,10 @@ public:
     void renderNextBlock (AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
     {
         //ADSR! :)
-        env1.setAttack(10);
-        env1.setDecay(300); //30ms decay
-        env1.setSustain(0.1); //between 0-1
-        env1.setRelease(0); //10ms release
+        //env1.setAttack(10);
+        //env1.setSustain(300.0);
+        //env1.setSustain(0.1); //between 0-1
+        //env1.setRelease(0);
                         
         for (int sample = 0; sample < numSamples; ++sample)
         {

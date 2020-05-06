@@ -16,8 +16,11 @@
 //==============================================================================
 /**
 */
+
+
 class Isauj6AudioProcessorEditor  : public AudioProcessorEditor,
 public Slider::Listener
+
 {
 public:
     Isauj6AudioProcessorEditor (Isauj6AudioProcessor&);
@@ -34,7 +37,13 @@ private:
     // access the processor object that created it.
     Isauj6AudioProcessor& processor;
     
+    
     Slider attackSlider; // [2]
+    Label attackLabel;
+    Slider decaySlider;
+    Slider sustainSlider;
+    Slider releaseSlider;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Isauj6AudioProcessorEditor)
 };

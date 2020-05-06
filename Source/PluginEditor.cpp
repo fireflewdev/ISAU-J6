@@ -23,8 +23,36 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
     attackSlider.setRange(0.1f, 5000.0f);
     attackSlider.setValue(0.1f);
     attackSlider.setTextBoxStyle(Slider::TextBoxBelow, true, 20.0, 10.0);
+    attackSlider.setTextValueSuffix (" ms");
     attackSlider.addListener(this);
     addAndMakeVisible(&attackSlider);
+    
+    addAndMakeVisible (attackLabel);
+    attackLabel.setText("Attack", dontSendNotification);
+    attackLabel.attachToComponent (&attackSlider, true);
+    
+    decaySlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    decaySlider.setRange(0.1f, 500.0f);
+    decaySlider.setValue(500.0f);
+    decaySlider.setTextBoxStyle(Slider::TextBoxBelow, true, 20.0, 10.0);
+    decaySlider.setTextValueSuffix (" ms");
+    decaySlider.addListener(this);
+    addAndMakeVisible(&decaySlider);
+    
+    sustainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    sustainSlider.setRange(0.0f, 1.0f);
+    sustainSlider.setValue(500.0f);
+    sustainSlider.setTextBoxStyle(Slider::TextBoxBelow, true, 20.0, 10.0);
+    sustainSlider.addListener(this);
+    addAndMakeVisible(&sustainSlider);
+    
+    releaseSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    releaseSlider.setRange(0.0f, 5000.0f);
+    releaseSlider.setValue(0.0f);
+    releaseSlider.setTextBoxStyle(Slider::TextBoxBelow, true, 20.0, 10.0);
+    releaseSlider.setTextValueSuffix (" ms");
+    releaseSlider.addListener(this);
+    addAndMakeVisible(&releaseSlider);
     
 }
 
@@ -50,11 +78,24 @@ void Isauj6AudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     // sets the position and size of the slider with arguments (x, y, width, height)
-    attackSlider.setBounds(10,10,40,100);
+    int buff = 10;
+    attackSlider.setBounds(buff,getHeight()-100-buff,20,100);
+    decaySlider.setBounds(40+buff,getHeight()-100-buff,20,100);
+    sustainSlider.setBounds(80+buff,getHeight()-100-buff,20,100);
+    releaseSlider.setBounds(120+buff,getHeight()-100,20,100);
 }
 
 void Isauj6AudioProcessorEditor::sliderValueChanged(Slider* slider){
     if (slider == &attackSlider){
         processor.attackTime = attackSlider.getValue();
+    }
+    if (slider == &decaySlider){
+        processor.decayTime = decaySlider.getValue();
+    }
+    if (slider == &sustainSlider){
+        processor.sustainVal = sustainSlider.getValue();
+    }
+    if (slider == &releaseSlider){
+        processor.releaseTime = releaseSlider.getValue();
     }
 }
