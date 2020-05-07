@@ -39,7 +39,13 @@ public:
     void setReleaseParam (double e)
     {
         env1.setRelease(e);
-        cout<<"yo"<<e<<"\n";
+    }
+    
+    void setMidiVolumeParam (double e)
+    {
+        level *= e;
+        
+        cout<<"v "<<e<<"\n";
     }
     
     static double noteHz(int midiNoteNumber, double centsOffset)
@@ -74,11 +80,6 @@ public:
     
     void renderNextBlock (AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
     {
-        //ADSR! :)
-        //env1.setAttack(10);
-        //env1.setSustain(300.0);
-        //env1.setSustain(0.1); //between 0-1
-        //env1.setRelease(0);
                         
         for (int sample = 0; sample < numSamples; ++sample)
         {

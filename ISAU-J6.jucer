@@ -5,6 +5,8 @@
               pluginManufacturer="Fireflew Development">
   <MAINGROUP id="qEEjMK" name="ISAU-J6">
     <GROUP id="{2C05733A-D5A7-5A39-389D-9D75BEBDAD84}" name="Source">
+      <FILE id="YfMomp" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
+      <FILE id="veDKNr" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
       <FILE id="schJWr" name="SynthVoice.h" compile="1" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="qKybly" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
       <GROUP id="{24414260-440E-83B9-E859-2DF58037E476}" name="Maximilian">

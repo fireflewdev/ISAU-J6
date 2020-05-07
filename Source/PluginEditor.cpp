@@ -17,7 +17,17 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (800, 600);
+    setSize (600, 400);
+    
+    addAndMakeVisible(&oscGUI);
+    
+    volumeSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    volumeSlider.setRange(0, 1.0f);
+    volumeSlider.setValue(0.8f);
+    volumeSlider.setTextBoxStyle(Slider::TextBoxBelow, true, 20.0, 10.0);
+    volumeSlider.setTextValueSuffix (" ms");
+    volumeSlider.addListener(this);
+    addAndMakeVisible(&volumeSlider);
     
     attackSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
     attackSlider.setRange(0.1f, 5000.0f);
@@ -26,11 +36,6 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
     attackSlider.setTextValueSuffix (" ms");
     attackSlider.addListener(this);
     addAndMakeVisible(&attackSlider);
-    
-    addAndMakeVisible (attackLabel);
-    attackLabel.setText("Attack", dontSendNotification);
-    attackLabel.attachToComponent (&attackSlider, true);
-    attackLabel.setJustificationType (Justification::top);
     
     decaySlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
     decaySlider.setRange(0.1f, 500.0f);
@@ -55,6 +60,10 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
     releaseSlider.addListener(this);
     addAndMakeVisible(&releaseSlider);
     
+    // In your constructor, you should add any child components, and
+    // initialise any special settings that your component needs.
+
+    
 }
 
 Isauj6AudioProcessorEditor::~Isauj6AudioProcessorEditor()
@@ -66,7 +75,7 @@ Isauj6AudioProcessorEditor::~Isauj6AudioProcessorEditor()
 void Isauj6AudioProcessorEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+    g.fillAll (Colours::black);
 
     g.setColour (Colours::white);
     g.setFont (15.0f);
@@ -79,7 +88,16 @@ void Isauj6AudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     // sets the position and size of the slider with arguments (x, y, width, height)
-    int buff = 10;
+    int buff = 20;
+    
+    Rectangle<int> area = getLocalBounds();
+    
+    const int componentWidth = 200;
+    const int componentHeight = 200;
+    
+    oscGUI.setBounds(area.removeFromLeft(componentWidth).removeFromTop(componentHeight));
+    
+    volumeSlider.setBounds(getWidth()-buff*2,buff,20,100);
     attackSlider.setBounds(buff,getHeight()-100-buff,20,100);
     decaySlider.setBounds(40+buff,getHeight()-100-buff,20,100);
     sustainSlider.setBounds(80+buff,getHeight()-100-buff,20,100);
@@ -87,6 +105,9 @@ void Isauj6AudioProcessorEditor::resized()
 }
 
 void Isauj6AudioProcessorEditor::sliderValueChanged(Slider* slider){
+    if (slider == &volumeSlider){
+        processor.midiVolume = volumeSlider.getValue();
+    }
     if (slider == &attackSlider){
         processor.attackTime = attackSlider.getValue();
     }

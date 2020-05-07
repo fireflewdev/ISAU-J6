@@ -12,6 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
+#include "Oscillator.h"
 
 //==============================================================================
 /**
@@ -37,9 +38,12 @@ private:
     // access the processor object that created it.
     Isauj6AudioProcessor& processor;
     
-    
-    Slider attackSlider; // [2]
     Label attackLabel;
+
+    Oscillator oscGUI;
+    
+    Slider volumeSlider;
+    Slider attackSlider;
     Slider decaySlider;
     Slider sustainSlider;
     Slider releaseSlider;
