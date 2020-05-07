@@ -116,7 +116,6 @@ void Isauj6AudioProcessorEditor::paint (Graphics& g)
     g.setColour (Colours::white);
     g.setFont (15.0f);
     
-    g.drawFittedText ("ISAU J6 SYNTH by Fireflew", 0, 0, getWidth(), 30, Justification::centred, 1);
     g.drawFittedText ("Vol", getWidth()-60, 120, 50, 30, Justification::centred, 1);
     g.drawFittedText ("ADSR", 20, getHeight()-160, 140, 30, Justification::centred, 1);
     g.drawFittedText ("Filter", 160, getHeight()-160, 120, 30, Justification::centred, 1);
@@ -131,8 +130,8 @@ void Isauj6AudioProcessorEditor::resized()
     
     //!!!!!!!
     oscMenu.setBounds(buff, buff, 100, 60);
-    osc2Menu.setBounds(buff, buff*2 + 100, 100, 60);
-    oscSlider.setBounds(buff+120, buff, 20, 100);
+    osc2Menu.setBounds(buff, buff*2 + 60, 100, 60);
+    oscSlider.setBounds(buff+200, buff, 20, 120+buff);
     
     volumeSlider.setBounds(getWidth()-buff*2,buff,20,100);
     
