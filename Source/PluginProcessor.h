@@ -59,6 +59,11 @@ public:
     
     int oscillator;
     int oscillator2;
+    float oscOctave;
+    float osc2Octave;
+    
+    float oscDetune;
+    float osc2Detune;
     float midiVolume;
     float oscMix;
     float filterVal;

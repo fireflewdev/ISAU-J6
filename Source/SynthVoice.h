@@ -41,21 +41,27 @@ public:
         env1.setRelease(e);
     }
     
-    void setOscillatorParam(int e)
+    void setOscillatorParams(int o1, int o2)
     {
-        oscillator = e;
+        oscillator = o1;
+        oscillator2 = o2;
     }
     
-    void setOscillator2Param(int e)
+    void setDetuneParams(double o1, double o2)
     {
-        oscillator2 = e;
+        oscDetune = o1;
+        osc2Detune = o2;
+        //std::cout <<"o "<< oscDetune << " " << osc2Detune << std::endl;
+    }
+    void setOctaveParams(int o1, int o2){
+        octave = o1;
+        octave2 = o2;
     }
     
     void setOscMixParam (double e)
     {
         oscMix = e;
-        std::cout <<"o "<< oscMix << std::endl;
-
+        //std::cout <<"o "<< oscMix << std::endl;
     }
     
     
@@ -79,7 +85,7 @@ public:
         env1.trigger = 1;
         level = velocity;
         frequency = noteHz(midiNoteNumber, 0);
-        std::cout << midiNoteNumber << std::endl;
+        //std::cout << midiNoteNumber << std::endl;
     }
     //================
     
@@ -88,7 +94,7 @@ public:
         env1.trigger = 0;
         allowTailOff = true;
         //clearCurrentNote();
-        if(velocity == 0)
+        if(velocity <= 0.1)
         {
             clearCurrentNote();
         }
@@ -103,38 +109,42 @@ public:
             double theWave;
             double o1;
             double o2;
+            double multiplier1 = frequency*pow(2.0, (double)(octave-2));
+            double multiplier2 = frequency*pow(2.0, (double)(octave2-2));
+            double f1 = multiplier1 + oscDetune;
+            double f2 = multiplier2 + osc2Detune;
             if (oscillator == 1)
             {
-                o1 = osc1.saw(frequency);
+                o1 = osc1.saw(f1);
             }
             else if (oscillator == 2)
             {
-                o1 = osc1.square(frequency);
+                o1 = osc1.square(f1);
             }
             else if (oscillator == 3)
             {
-                o1 = osc1.triangle(frequency);
+                o1 = osc1.triangle(f1);
             }
             else
             {
-                o1 = osc1.sinewave(frequency);
+                o1 = osc1.sinewave(f1);
             }
             
             if (oscillator2 == 1)
             {
-                o2 = osc2.saw(frequency);
+                o2 = osc2.saw(f2);
             }
             else if (oscillator2 == 2)
             {
-                o2 = osc2.square(frequency);
+                o2 = osc2.square(f2);
             }
             else if (oscillator2 == 3)
             {
-                o2 = osc2.triangle(frequency);
+                o2 = osc2.triangle(f2);
             }
             else
             {
-                o2 = osc2.sinewave(frequency);
+                o2 = osc2.sinewave(f2);
             }
             
             theWave = o1*oscMix+o2*(1-oscMix);
@@ -167,8 +177,14 @@ public:
 private:
     int oscillator;
     int oscillator2;
+    int octave;
+    int octave2;
+    
+    double oscDetune;
+    double osc2Detune;
     
     double oscMix;
+    
     double level;
     double filterAmnt;
     double frequency;

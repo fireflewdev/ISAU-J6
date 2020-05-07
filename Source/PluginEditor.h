@@ -40,12 +40,19 @@ private:
     // access the processor object that created it.
     Isauj6AudioProcessor& processor;
     
-    Label attackLabel;
+    Label detuneLabel1;
+    Label detuneLabel2;
+    
+    Label filterLabel;
 
     ComboBox oscMenu;
     ComboBox osc2Menu;
+    ComboBox oscOctave;
+    ComboBox osc2Octave;
     
     Slider oscSlider;
+    Slider oscDetune;
+    Slider osc2Detune;
     
     Slider volumeSlider;
     Slider filterSlider;

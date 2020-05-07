@@ -24,8 +24,12 @@ Isauj6AudioProcessor::Isauj6AudioProcessor()
                        ),
 oscillator(1),
 oscillator2(1),
+oscDetune(0),
+osc2Detune(0),
+oscOctave(2),
+osc2Octave(2),
 midiVolume(70.0f),
-oscMix(1.0f),
+oscMix(0.5f),
 filterVal(9000.0f),
 attackTime(0.1f),
 decayTime(500.0f),
@@ -213,8 +217,9 @@ void Isauj6AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
         midiMessages.swapWith (processedMidi);
         
         //oscillator
-        myVoice->setOscillatorParam(oscillator);
-        myVoice->setOscillator2Param(oscillator2);
+        myVoice->setOscillatorParams(oscillator, oscillator2);
+        myVoice->setDetuneParams(oscDetune, osc2Detune);
+        myVoice->setOctaveParams(oscOctave, osc2Octave);
         myVoice->setOscMixParam(oscMix);
         //filter
         myVoice->setFilterParam(filterVal);
