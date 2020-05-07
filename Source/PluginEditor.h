@@ -19,8 +19,7 @@
 */
 
 
-class Isauj6AudioProcessorEditor  : public AudioProcessorEditor,
-public Slider::Listener
+class Isauj6AudioProcessorEditor  : public AudioProcessorEditor, public Slider::Listener
 
 {
 public:
@@ -43,6 +42,8 @@ private:
     Oscillator oscGUI;
     
     Slider volumeSlider;
+    Slider filterSlider;
+    
     Slider attackSlider;
     Slider decaySlider;
     Slider sustainSlider;

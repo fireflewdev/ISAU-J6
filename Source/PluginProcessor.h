@@ -58,17 +58,18 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     float midiVolume;
+    float filterVal;
     float attackTime;
     float decayTime;
     float sustainVal;
     float releaseTime;
 
 
-private:
+private:    
     Synthesiser mySynth;
     Synthesiser myVoice;
     
     double lastSampleRate;
-    //==============================================================================
+        //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Isauj6AudioProcessor)
 };

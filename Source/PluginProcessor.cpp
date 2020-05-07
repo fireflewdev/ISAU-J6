@@ -22,7 +22,8 @@ Isauj6AudioProcessor::Isauj6AudioProcessor()
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                        ),
-midiVolume(0.8f),
+midiVolume(100.0f),
+filterVal(9000.0f),
 attackTime(0.1f),
 decayTime(500.0f),
 sustainVal(1.0f),
@@ -182,7 +183,34 @@ void Isauj6AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
         SynthVoice *myVoice = dynamic_cast<SynthVoice *>(mySynth.getVoice(i));
         
         //volume
-        myVoice->setMidiVolumeParam(midiVolume);
+        MidiBuffer processedMidi;
+        int time;
+        MidiMessage m;
+        
+        for (MidiBuffer::Iterator i (midiMessages); i.getNextEvent (m, time);)
+        {
+            if (m.isNoteOn())
+            {
+                uint8 newVel = (uint8)midiVolume;
+                m = MidiMessage::noteOn(m.getChannel(), m.getNoteNumber(), newVel);
+            }
+            else if (m.isNoteOff())
+            {
+            }
+            else if (m.isAftertouch())
+            {
+            }
+            else if (m.isPitchWheel())
+            {
+            }
+            
+            processedMidi.addEvent (m, time);
+        }
+        
+        midiMessages.swapWith (processedMidi);
+        
+        //filter
+        myVoice ->setFilterParam(filterVal);
         
         //ADSR
         myVoice->setAttackParam(attackTime);

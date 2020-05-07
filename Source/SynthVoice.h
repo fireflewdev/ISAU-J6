@@ -41,11 +41,10 @@ public:
         env1.setRelease(e);
     }
     
-    void setMidiVolumeParam (double e)
+    void setFilterParam (double e)
     {
-        level *= e;
-        
-        cout<<"v "<<e<<"\n";
+        filterAmnt = e;
+        //std::cout <<"filter "<< e << std::endl;
     }
     
     static double noteHz(int midiNoteNumber, double centsOffset)
@@ -85,7 +84,7 @@ public:
         {
             double theWave = osc1.saw(frequency);
             double theSound = env1.adsr(theWave, env1.trigger) * level;
-            double filteredSound = filter1.lores(theSound, 200, 0.1);
+            double filteredSound = filter1.lores(theSound, filterAmnt, 0.1);
 
             for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
             {
@@ -111,6 +110,7 @@ public:
     
 private:
     double level;
+    double filterAmnt;
     double frequency;
     
     maxiOsc osc1;
