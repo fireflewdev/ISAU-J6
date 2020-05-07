@@ -109,8 +109,8 @@ public:
             double theWave;
             double o1;
             double o2;
-            double multiplier1 = frequency*pow(2.0, (double)(octave-2));
-            double multiplier2 = frequency*pow(2.0, (double)(octave2-2));
+            double multiplier1 = frequency*pow(2.0, (double)(octave-1));
+            double multiplier2 = frequency*pow(2.0, (double)(octave2-1));
             double f1 = multiplier1 + oscDetune;
             double f2 = multiplier2 + osc2Detune;
             if (oscillator == 1)
