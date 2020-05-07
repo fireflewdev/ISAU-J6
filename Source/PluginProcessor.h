@@ -57,7 +57,10 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    int oscillator;
+    int oscillator2;
     float midiVolume;
+    float oscMix;
     float filterVal;
     float attackTime;
     float decayTime;

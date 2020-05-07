@@ -19,14 +19,43 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
     // editor's size to whatever you need it to be.
     setSize (600, 400);
     
+    //Osc1
+    oscMenu.addItem("Saw", 1);
+    oscMenu.addItem("Square", 2);
+    oscMenu.addItem("Triangle",3);
+    oscMenu.addItem("Sine", 4);
+    oscMenu.setSelectedId(1);
+    addAndMakeVisible(&oscMenu);
+    oscMenu.addListener(this);
+    oscMenu.setJustificationType(Justification::centred);
+    
+    //Osc2
+    osc2Menu.addItem("Saw", 1);
+    osc2Menu.addItem("Square", 2);
+    osc2Menu.addItem("Triangle",3);
+    osc2Menu.addItem("Sine", 4);
+    osc2Menu.setSelectedId(1);
+    addAndMakeVisible(&osc2Menu);
+    osc2Menu.addListener(this);
+    osc2Menu.setJustificationType(Justification::centred);
+    
+    //Osc mix
+    oscSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    oscSlider.setRange(0, 1.0f);
+    oscSlider.setValue(1.0f);
+    oscSlider.addListener(this);
+    addAndMakeVisible(&oscSlider);
+    
+    //Vol
     volumeSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-    volumeSlider.setRange(0, 127.0f);
-    volumeSlider.setValue(100.0f);
+    volumeSlider.setRange(0.0f, 100.0f);
+    volumeSlider.setValue(50.0f);
     //volumeSlider.setTextBoxStyle(Slider::TextBoxAbove, true, 50.0, 20.0);
     //volumeSlider.setTextValueSuffix (" ms");
     volumeSlider.addListener(this);
     addAndMakeVisible(&volumeSlider);
     
+    //Filter
     filterSlider.setSliderStyle(Slider::SliderStyle::Rotary);
     filterSlider.setRange(20, 9000.0f);
     filterSlider.setValue(9000.0f);
@@ -35,6 +64,7 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
     filterSlider.addListener(this);
     addAndMakeVisible(&filterSlider);
     
+    //ADSR
     attackSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
     attackSlider.setRange(0.1f, 5000.0f);
     attackSlider.setValue(0.1f);
@@ -52,15 +82,15 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
     addAndMakeVisible(&decaySlider);
     
     sustainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-    sustainSlider.setRange(0.0f, 1.0f);
+    sustainSlider.setRange(0.01f, 1.0f);
     sustainSlider.setValue(500.0f);
     //sustainSlider.setTextBoxStyle(Slider::TextBoxBelow, true, 20.0, 10.0);
     sustainSlider.addListener(this);
     addAndMakeVisible(&sustainSlider);
     
     releaseSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-    releaseSlider.setRange(0.0f, 5000.0f);
-    releaseSlider.setValue(0.0f);
+    releaseSlider.setRange(0.1f, 5000.0f);
+    releaseSlider.setValue(0.1f);
     //releaseSlider.setTextBoxStyle(Slider::TextBoxBelow, true, 20.0, 10.0);
     //releaseSlider.setTextValueSuffix (" ms");
     releaseSlider.addListener(this);
@@ -86,7 +116,7 @@ void Isauj6AudioProcessorEditor::paint (Graphics& g)
     g.setColour (Colours::white);
     g.setFont (15.0f);
     
-    g.drawFittedText ("ISAU J6 SYNTH", 0, 0, getWidth(), 30, Justification::centred, 1);
+    g.drawFittedText ("ISAU J6 SYNTH by Fireflew", 0, 0, getWidth(), 30, Justification::centred, 1);
     g.drawFittedText ("Vol", getWidth()-60, 120, 50, 30, Justification::centred, 1);
     g.drawFittedText ("ADSR", 20, getHeight()-160, 140, 30, Justification::centred, 1);
     g.drawFittedText ("Filter", 160, getHeight()-160, 120, 30, Justification::centred, 1);
@@ -99,13 +129,10 @@ void Isauj6AudioProcessorEditor::resized()
     // sets the position and size of the slider with arguments (x, y, width, height)
     int buff = 20;
     
-    Rectangle<int> area = getLocalBounds();
-    
-    const int componentWidth = 200;
-    const int componentHeight = 200;
-    
     //!!!!!!!
-    oscGUI.setBounds(area.removeFromLeft(componentWidth).removeFromTop(componentHeight));
+    oscMenu.setBounds(buff, buff, 100, 60);
+    osc2Menu.setBounds(buff, buff*2 + 100, 100, 60);
+    oscSlider.setBounds(buff+120, buff, 20, 100);
     
     volumeSlider.setBounds(getWidth()-buff*2,buff,20,100);
     
@@ -135,5 +162,17 @@ void Isauj6AudioProcessorEditor::sliderValueChanged(Slider* slider){
     }
     if (slider == &releaseSlider){
         processor.releaseTime = releaseSlider.getValue();
+    }
+    if (slider == &oscSlider){
+        processor.oscMix = oscSlider.getValue();
+    }
+}
+
+void Isauj6AudioProcessorEditor::comboBoxChanged(ComboBox* box){
+    if (box == &oscMenu){
+        processor.oscillator = oscMenu.getSelectedId();
+    }
+    if (box == &osc2Menu){
+        processor.oscillator2 = osc2Menu.getSelectedId();
     }
 }

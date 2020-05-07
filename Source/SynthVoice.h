@@ -41,6 +41,24 @@ public:
         env1.setRelease(e);
     }
     
+    void setOscillatorParam(int e)
+    {
+        oscillator = e;
+    }
+    
+    void setOscillator2Param(int e)
+    {
+        oscillator2 = e;
+    }
+    
+    void setOscMixParam (double e)
+    {
+        oscMix = e;
+        std::cout <<"o "<< oscMix << std::endl;
+
+    }
+    
+    
     void setFilterParam (double e)
     {
         filterAmnt = e;
@@ -82,7 +100,45 @@ public:
                         
         for (int sample = 0; sample < numSamples; ++sample)
         {
-            double theWave = osc1.saw(frequency);
+            double theWave;
+            double o1;
+            double o2;
+            if (oscillator == 1)
+            {
+                o1 = osc1.saw(frequency);
+            }
+            else if (oscillator == 2)
+            {
+                o1 = osc1.square(frequency);
+            }
+            else if (oscillator == 3)
+            {
+                o1 = osc1.triangle(frequency);
+            }
+            else
+            {
+                o1 = osc1.sinewave(frequency);
+            }
+            
+            if (oscillator2 == 1)
+            {
+                o2 = osc2.saw(frequency);
+            }
+            else if (oscillator2 == 2)
+            {
+                o2 = osc2.square(frequency);
+            }
+            else if (oscillator2 == 3)
+            {
+                o2 = osc2.triangle(frequency);
+            }
+            else
+            {
+                o2 = osc2.sinewave(frequency);
+            }
+            
+            theWave = o1*oscMix+o2*(1-oscMix);
+            
             double theSound = env1.adsr(theWave, env1.trigger) * level;
             double filteredSound = filter1.lores(theSound, filterAmnt, 0.1);
 
@@ -109,11 +165,16 @@ public:
     //================
     
 private:
+    int oscillator;
+    int oscillator2;
+    
+    double oscMix;
     double level;
     double filterAmnt;
     double frequency;
     
     maxiOsc osc1;
+    maxiOsc osc2;
     maxiEnv env1;
     maxiFilter filter1;
 };

@@ -22,12 +22,15 @@ Isauj6AudioProcessor::Isauj6AudioProcessor()
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                        ),
-midiVolume(100.0f),
+oscillator(1),
+oscillator2(1),
+midiVolume(70.0f),
+oscMix(1.0f),
 filterVal(9000.0f),
 attackTime(0.1f),
 decayTime(500.0f),
 sustainVal(1.0f),
-releaseTime(0.0f)
+releaseTime(0.1f)
 
 #endif
 {
@@ -209,8 +212,12 @@ void Isauj6AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
         
         midiMessages.swapWith (processedMidi);
         
+        //oscillator
+        myVoice->setOscillatorParam(oscillator);
+        myVoice->setOscillator2Param(oscillator2);
+        myVoice->setOscMixParam(oscMix);
         //filter
-        myVoice ->setFilterParam(filterVal);
+        myVoice->setFilterParam(filterVal);
         
         //ADSR
         myVoice->setAttackParam(attackTime);

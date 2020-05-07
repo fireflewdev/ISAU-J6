@@ -12,14 +12,16 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "Oscillator.h"
+//#include "Oscillator.h"
 
 //==============================================================================
 /**
 */
 
 
-class Isauj6AudioProcessorEditor  : public AudioProcessorEditor, public Slider::Listener
+class Isauj6AudioProcessorEditor  : public AudioProcessorEditor,
+                                    public Slider::Listener,
+                                    public ComboBox::Listener
 
 {
 public:
@@ -31,6 +33,7 @@ public:
     void resized() override;
     
     void sliderValueChanged (Slider* slider) override;
+    void comboBoxChanged(ComboBox* box) override;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -39,7 +42,10 @@ private:
     
     Label attackLabel;
 
-    Oscillator oscGUI;
+    ComboBox oscMenu;
+    ComboBox osc2Menu;
+    
+    Slider oscSlider;
     
     Slider volumeSlider;
     Slider filterSlider;
