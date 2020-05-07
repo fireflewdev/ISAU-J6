@@ -112,7 +112,7 @@ Isauj6AudioProcessorEditor::Isauj6AudioProcessorEditor (Isauj6AudioProcessor& p)
     
     //Filter label
     addAndMakeVisible (filterLabel);
-    filterLabel.setText ("Lowpass filter", dontSendNotification);
+    filterLabel.setText ("Cutoff", dontSendNotification);
     filterLabel.setColour (Label::textColourId, Colours::white);
     filterLabel.setJustificationType (Justification::centred);
     filterLabel.attachToComponent (&filterSlider, false);
@@ -170,6 +170,9 @@ void Isauj6AudioProcessorEditor::paint (Graphics& g)
     g.setFont (15.0f);
     
     g.drawFittedText ("Vol", getWidth()-50, 120, 50, 30, Justification::centred, 1);
+    g.drawFittedText ("Octave", 210, 60, 50, 30, Justification::centred, 1);
+    g.drawFittedText ("Octave", 210, 160, 50, 30, Justification::centred, 1);
+
     g.drawFittedText ("Mix", 280, 160, 40, 30, Justification::centred, 1);
     g.drawFittedText ("ADSR", 20, getHeight()-160, 140, 30, Justification::centred, 1);
     g.drawFittedText ("A subtractive synth by Fireflew", getWidth()-220, getHeight()-50, 200, 30, Justification::bottomRight, 1);
