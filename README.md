@@ -10,4 +10,4 @@ Features:
 - Master volume
 - GUI
 
-Is able to be integrated into most DAWs, there are still some issues with automation and persitency in the controls
+Is able to be integrated into most DAWs, there are still some issues with automation and persistency in the controls
